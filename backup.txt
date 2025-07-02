@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Concurso Nacional</title>
+  <style>
+    /* JUSTIFICA TODOS OS TEXTOS DE P, H1, H2, H3, DIV e SPAN */
+    p, h1, h2, h3, div, span {
+      text-align: justify;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('fundo.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    header button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #cadastroBtn { background-color: blue; }
+    #loginBtn { background-color: darkgray; }
+
+    .main {
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+    .main h1 {
+      /* mantendo o texto justificado, mas se preferir centralizar, pode sobrescrever aqui */
+      /* text-align: center; */
+      color: darkred;
+      margin-top: 0;
+    }
+    .main p {
+      font-size: 1.2rem;
+      margin-top: 0;
+    }
+
+    .conteudo {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-top: 2rem;
+    }
+
+    .imagens, .info {
+      flex: 1 1 45%;
+      margin: 1rem;
+    }
+
+    .imagens {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .imagens img {
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+      border-radius: 6px;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .imagens img:hover {
+      transform: scale(1.05);
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .info p {
+      margin-bottom: 10px;
+    }
+
+    .info button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      background-color: darkblue;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .divisao {
+      border: none;
+      height: 5px;
+      background-color: #444;
+      margin: 50px auto 30px auto;
+      width: 90%;
+      border-radius: 3px;
+    }
+
+    .temas {
+      margin: 2rem;
+      /* Já justificado por regra global */
+    }
+
+    .temas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .temas-grid button {
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s, border-color 0.3s;
+      text-align: center; /* Para botões, melhor centralizar texto */
+    }
+
+    .temas-grid button:hover {
+      background-color: #004080;
+      color: white;
+      border-color: #003060;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      max-width: 90vw;
+      max-height: 90vh;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      z-index: 1000;
+      text-align: justify; /* Justificado dentro do popup */
+    }
+
+    .popup h2 {
+      margin-top: 0;
+      color: #004080;
+      text-align: center; /* Pode deixar título centralizado */
+    }
+
+    .popup img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 6px;
+      margin-top: 10px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .videos {
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      justify-items: center;
+      text-align: justify; /* vídeos texto justificado */
+      max-width: 1000px;
+    }
+
+    .videos iframe {
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    .videos p {
+      grid-column: 1 / -1;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-top: 10px;
+      text-align: justify;
+    }
+
+    footer {
+      background-color: #ccc;
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+
+    footer a button {
+      padding: 10px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    @media(max-width: 768px) {
+      .conteudo {
+        flex-direction: column;
+      }
+      .imagens img {
+        width: 45%;
+        height: auto;
+      }
+      .temas-grid {
+        grid-template-columns: 1fr;
+      }
+      .videos {
+        grid-template-columns: 1fr;
+      }
+      .info p {
+        margin-bottom: 10px;
+      }
+      .botoes-lado-a-lado {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <button id="cadastroBtn" onclick="window.open('cadastro.html', '_blank')">Cadastro</button>
+  <button id="loginBtn" onclick="login()">Login</button>
+</header>
+
+<div class="main">
+  <h1>Chegou o grande momento</h1>
+  <div>
+    <p>
+      O caminho para a aprovação em concursos públicos, como o Concurso Nacional CPNU, exige muito mais do que apenas vontade: é preciso estratégia, dedicação e acesso a conteúdos de qualidade. Investir em conhecimento de forma antecipada e com baixo custo é a melhor decisão que você pode tomar para aumentar suas chances de sucesso.
+    </p>
+
+    <p>
+      Ao iniciar seus estudos com calma e foco, você constrói uma base sólida, entende profundamente os conteúdos exigidos e evita a pressão de última hora. Além disso, com métodos de aprendizado acessíveis, você otimiza seu tempo e recursos, tornando sua preparação mais eficiente e menos custosa.
+    </p>
+
+    <p>
+      Lembre-se: o mercado público é competitivo, mas quem se prepara melhor tem o diferencial. Com uma preparação inteligente, alinhada ao edital e orientada por especialistas, você não apenas aumenta suas chances de aprovação, mas também constrói uma trajetória de conhecimento que será valiosa para toda a carreira.
+    </p>
+
+    <p>
+      Invista em você, invista no seu futuro. Comece hoje a trilhar o caminho para a estabilidade, o reconhecimento profissional e a realização dos seus sonhos.
+    </p>
+  </div>
+
+  <div class="conteudo">
+    <div class="imagens">
+      <img src="img1.jpg" alt="img1" onclick="abrirPopup(0)">
+      <img src="img2.jpg" alt="img2" onclick="abrirPopup(1)">
+      <img src="img3.jpg" alt="img3" onclick="abrirPopup(2)">
+      <img src="img4.jpg" alt="img4" onclick="abrirPopup(3)">
+      <img src="img5.jpg" alt="img5" onclick="abrirPopup(4)">
+      <img src="img6.jpg" alt="img6" onclick="abrirPopup(5)">
+    </div>
+    <div class="info">
+      <p>
+        A ministra ressaltou que os concursos públicos são parte da transformação do Estado,
+        planejando a reposição dos servidores diante de 180 mil aposentadorias previstas em 10 anos.
+        O CPNU 2 oferece 3.352 vagas em 35 órgãos, com provas em duas fases e medidas de segurança aprimoradas,
+        como código de barras nas respostas.
+
+        O concurso visa selecionar servidores alinhados às necessidades futuras do serviço público,
+        com vagas para diversas áreas e níveis, distribuídas regionalmente, principalmente no Rio de Janeiro, São Paulo, Pará e Pernambuco.
+      </p>
+
+      <div class="botoes-lado-a-lado">
+        <button onclick="window.open('https://conhecimento.fgv.br/sites/default/files/concursos/edital-de-abertura_concurso-publico-nacional-unificado-2_final.pdf')">Edital</button>
+        <button onclick="window.open('https://inscricao-cpnu.conhecimento.fgv.br/')">Inscrição</button>
+        <button onclick="window.open('cadastro.html', '_blank')">Cadastro CURSO</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divisao">
+
+  <div class="temas">
+    <h3>Temas</h3>
+    <div id="popups" class="temas-grid"></div>
+  </div>
+
+  <hr class="divisao">
+
+  <div class="videos">
+    <h3>Vídeos sobre o Concurso Nacional</h3>
+    <iframe src="https://www.youtube.com/embed/tVrRkcU3Vbg" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/2J841Sta4Go" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/Vdmd0zE_FbA" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/i4WvruVWLOw" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/TnQKFIdcZNI" allowfullscreen></iframe>
+    <p>É fundamental se preparar com antecedência. Invista em conhecimento com baixo custo e aumente suas chances!</p>
+  </div>
+</div>
+
+<footer>
+  <a href="https://www.gov.br/gestao/pt-br/concursonacional" target="_blank"><button>CPNU 2</button></a>
+  <a href="https://conhecimento.fgv.br/sites/default/files/concursos/edital-de-abertura_concurso-publico-nacional-unificado-2_final.pdf" target="_blank"><button>EDITAL</button></a>
+  <a href="https://www.gov.br/gestao/pt-br/concursonacional/cpnu-2/cargos-e-salarios-cpnu-2" target="_blank"><button>CARGOS</button></a>
+</footer>
+
+<script>
+  const temas = [
+    "Anexo IX – Bloco Temático 9: Intermediário – Regulação",
+    "Anexo VIII – Bloco Temático 8: Intermediário – Saúde",
+    "Anexo VII – Bloco Temático 7: Justiça e Defesa",
+    "Anexo VI – Bloco Temático 6: Desenvolvimento Socioeconômico",
+    "Anexo V – Bloco Temático 5: Administração",
+    "Anexo IV – Bloco Temático 4: Engenharia e Arquitetura",
+    "Anexo III – Bloco Temático 3: Ciência e Tecnologia",
+    "Anexo II – Bloco Temático 2: Cultura e Educação",
+    "Anexo I – Bloco Temático 1: Seguridade Social – Saúde, Assistência Social e Previdência Social"
+  ];
+
+  // Array com os links correspondentes aos temas
+  const links = [
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico9.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico8.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico7.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico6.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico5.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico4.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico3.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico2.pdf",
+    "https://conhecimento.fgv.br/sites/default/files/concursos/cpnu2_anexo_blocotematico1.pdf"
+  ];
+
+  const container = document.getElementById('popups');
+  temas.forEach((tema, index) => {
+    const btn = document.createElement('button');
+    btn.innerText = tema;
+    btn.onclick = () => {
+      // Redireciona para o link específico
+      window.location.href = links[index];
+    };
+    container.appendChild(btn);
+  });
+
+
+  function login() {
+    const senha = prompt('Digite a senha:');
+    if (senha === 'X') {
+      window.location.href = 'paginaX.html';
+    } else if (senha === 'N') {
+      window.location.href = 'paginaN.html';
+    } else {
+      alert('Senha incorreta.');
+    }
+  }
+</script>
+
+</body>
+</html>
