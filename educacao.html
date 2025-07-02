@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Repositório de Vídeos – CPNU</title>
+  <title>Educação</title>
   <style>
     * { box-sizing: border-box; }
     body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; }
@@ -21,13 +21,22 @@
       .container { flex-direction: column; }
       nav { width: 100%; }
     }
+      .amarelo {
+    color: yellow;
+  }
+
   </style>
 </head>
 <body>
-
+<div style="position: fixed; top: 10px; right: 10px; z-index: 999;">
+  <button onclick="logout()" style="background-color: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
+    Logout
+  </button>
+</div>
 <div class="container">
   <nav>
     <ul>
+        <p style="color: yellow;">Conhecimentos Gerais</p>
       <li onclick="toggleMenu('estado')">1. Estado de Direito, Democracia e Cidadania</li>
       <ul class="submenu" id="estado">
         <li onclick="loadVideo('bonlFm422r0')">Formação do Estado Democrático</li>
@@ -75,6 +84,11 @@
   <li onclick="loadVideo('bxTIjzGanBU')">IA e automação no setor público</li>
   <li onclick="loadVideo('ynRyswFkM8E')">Riscos e limitações da tecnologia</li>
 </ul>
+      
+      <li><a href="questoes.html" style="color:inherit; text-decoration:none; cursor:pointer;">Questões Conhecimentos Gerais</a></li>
+
+
+      <p style="color: yellow;">Conhecimentos Específicos</p>
 <li onclick="toggleMenu('gestao')">Eixo 1 – Gestão do Conhecimento e Comunicação</li>
 <ul class="submenu" id="gestao">
   <li onclick="loadVideo('BN_8cWtFb9I')">LGPD (Lei 13.709/2018)</li>
@@ -108,16 +122,17 @@
   <li onclick="loadVideo('2Kz5ga0eKJM')">Direitos autorais (Lei 9.610)</li>
   <li onclick="loadVideo('rrLiiPjoNh0')">Programa Cultura Viva</li>
 </ul>
-        <li onclick="toggleMenu('pesquisa')">Eixo 4 – Pesquisa</li>
+<li onclick="toggleMenu('pesquisa')">Eixo 4 – Pesquisa</li>
 <ul class="submenu" id="pesquisa">
-  <li onclick="loadVideo('Q5yJ3qjLs70')">Metodologias: qualitativa, quantitativa e mista</li>
-  <li onclick="loadVideo('zx0Wv5j-_Gc')">Problemas, hipóteses e desenho de pesquisa</li>
-  <li onclick="loadVideo('PMgKsHZw3CQ')">Coleta e análise de dados</li>
-  <li onclick="loadVideo('6fEOO56Y9Uc')">Pesquisa aplicada a políticas públicas</li>
-  <li onclick="loadVideo('Y_kD3EFJzHE')">Estudos de caso na educação, cultura e sociedade</li>
-  <li onclick="loadVideo('6KH6w-rnRms')">Ciclo de pesquisa: planejamento, execução, comunicação, gestão</li>
-  <li onclick="loadVideo('0H21pFnDDCY')">Ética em pesquisa</li>
+  <li onclick="loadVideo('kz62TZJDApA')">Metodologias: qualitativa, quantitativa e mista</li>
+  <li onclick="loadVideo('gBhh2k2Tr_E')">Problemas, hipóteses e desenho de pesquisa</li>
+  <li onclick="loadVideo('e6Jzp0d0PKc')">Coleta e análise de dados</li>
+  <li onclick="loadVideo('XZK6lgbnpcM')">Pesquisa aplicada a políticas públicas</li>
+  <li onclick="loadVideo('CkdPytH6htU')">Estudos de caso na educação, cultura e sociedade</li>
+  <li onclick="loadVideo('xXhOhavyBlY')">Ciclo de pesquisa: planejamento, execução, comunicação, gestão</li>
+  <li onclick="loadVideo('i70zcWr5qRE')">Ética em pesquisa</li>
 </ul>
+
 <li onclick="toggleMenu('avaliacao')">Eixo 5 – Avaliação</li>
 <ul class="submenu" id="avaliacao">
   <li onclick="loadVideo('tBYbZtH-9Dw')">Tipos de indicadores: resultado, impacto, processo</li>
@@ -127,21 +142,19 @@
   <li onclick="loadVideo('VCl1pRYq1Ro')">Modelos multivariados</li>
 </ul>
 
-
-
-
 </nav>
-
-
-
-
-
     </ul>
   </nav>
 
   <main>
-    <h2>Bem-vindo ao Repositório CPNU</h2>
-    <p>Selecione um tema no menu lateral para assistir ao vídeo correspondente.</p>
+    <h1 style="color: #2c3e50; text-align: center;">Bem-vindo ao Repositório CPNU!</h1>
+    <h2 style="color: #2c3e50; text-align: center;">Educação</h2>
+<p style="font-size: 1.2em; text-align: center; color: #333;">
+  Aqui você encontra tudo o que precisa para focar no que realmente importa: o conteúdo do edital!<br>
+  Desejamos a você um excelente estudo, muita dedicação e um progresso incrível rumo à aprovação. <br>
+  Vamos juntos nessa jornada de conquistas!
+</p>
+    <h3>Selecione um tema no menu lateral para assistir ao vídeo correspondente.</h3>
     <div id="videoBox">
       <iframe src="https://www.youtube.com/embed/bonlFm422r0" allowfullscreen></iframe>
     </div>
@@ -157,6 +170,9 @@
   function loadVideo(videoId) {
     document.getElementById('videoBox').innerHTML =
       `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
+  }
+    function logout() {
+    window.location.href = 'index.html';
   }
 </script>
 

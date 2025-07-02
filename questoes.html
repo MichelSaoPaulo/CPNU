@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Questões</title>
+<style>
+  body, html {
+    margin: 0; padding: 0;
+    font-family: Arial, sans-serif;
+    background: #0a0a23;
+    color: #eee;
+  }
+
+  #container {
+    display: flex;
+    height: 100vh;
+  }
+
+  /* Menu lateral */
+  #menu {
+    width: 280px;
+    background: #11114d;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  #menu h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #66b2ff;
+    text-align: center;
+  }
+  #menu ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  #menu ul li {
+    margin-bottom: 15px;
+  }
+  #menu ul li button {
+    width: 100%;
+    background: #4466cc;
+    color: white;
+    border: none;
+    padding: 12px 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #menu ul li button:hover {
+    background-color: #2244aa;
+  }
+
+  /* Área do quiz */
+  #quiz-container {
+    flex-grow: 1;
+    background: #1a1a4d;
+    overflow-y: auto;
+    padding: 30px 40px;
+    position: relative;
+  }
+
+  h1 {
+    text-align: center;
+    color: #80aaff;
+    margin-bottom: 30px;
+  }
+
+  section.block {
+    margin-bottom: 50px;
+  }
+  section.block h2 {
+    color: #aaddff;
+    border-bottom: 2px solid #5588ff;
+    padding-bottom: 6px;
+    margin-bottom: 25px;
+  }
+
+  .question {
+    background: #283366;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+  }
+  .question p {
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+  ul.options {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  ul.options li {
+    margin-bottom: 10px;
+  }
+  button.option-btn {
+    width: 100%;
+    background: #4466cc;
+    border: none;
+    padding: 10px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  button.option-btn:hover:not(:disabled) {
+    background-color: #2244aa;
+  }
+  button.option-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .result {
+    margin-top: 8px;
+    font-weight: 700;
+  }
+
+  /* Contador flutuante de erros e acertos */
+  #contador-flutuante {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: #223377cc;
+    padding: 15px 22px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    z-index: 9999;
+    box-shadow: 0 0 10px #000a;
+    user-select: none;
+    min-width: 160px;
+  }
+
+  /* Responsividade */
+  @media(max-width: 900px) {
+    #container {
+      flex-direction: column;
+    }
+    #menu {
+      width: 100%;
+      height: 120px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 10px 15px;
+    }
+    #menu ul li {
+      display: inline-block;
+      margin-right: 12px;
+      margin-bottom: 0;
+    }
+    #menu ul li button {
+      width: auto;
+      white-space: nowrap;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+    }
+    #quiz-container {
+      height: calc(100vh - 120px);
+      padding: 20px 15px;
+    }
+    #contador-flutuante {
+      position: static;
+      margin: 10px auto;
+      width: fit-content;
+      box-shadow: none;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    #btn-voltar {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #4466cc;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  transition: background-color 0.3s;
+}
+#btn-voltar:hover {
+  background-color: #2244aa;
+}
+  .amarelo {
+    color: yellow;
+  }
+
+
+</style>
+</head>
+<body>
+ <a href="educacao.html">
+  <button id="btn-voltar">← Voltar</button>
+</a>
+<div id="container">
+  <nav id="menu">
+    <h2>Menu de Blocos</h2>
+    <ul>
+      <li><button onclick="document.getElementById('bloco1').scrollIntoView({behavior:'smooth'});">Estado, Democracia e Cidadania</button></li>
+      <li><button onclick="document.getElementById('bloco2').scrollIntoView({behavior:'smooth'});">Políticas Públicas</button></li>
+      <li><button onclick="document.getElementById('bloco3').scrollIntoView({behavior:'smooth'});">Ética e Integridade</button></li>
+      <li><button onclick="document.getElementById('bloco4').scrollIntoView({behavior:'smooth'});">Diversidade e Inclusão</button></li>
+      <li><button onclick="document.getElementById('bloco5').scrollIntoView({behavior:'smooth'});">Administração Pública Federal</button></li>
+      <li><button onclick="document.getElementById('bloco6').scrollIntoView({behavior:'smooth'});">Trabalho e Tecnologia</button></li>
+    </ul>
+  </nav>
+
+  <main id="quiz-container">
+  <body style="background-color: black;">
+
+</body>
+
+    <section id="bloco1" class="block">
+      <h2>Estado, Democracia e Cidadania</h2>
+    </section>
+
+    <section id="bloco2" class="block">
+      <h2>Políticas Públicas</h2>
+    </section>
+  </main>
+</div>
+
+<!-- Contador flutuante -->
+<div id="contador-flutuante">
+  <div>Acertos: <span id="acertos">0</span></div>
+  <div>Erros: <span id="erros">0</span></div>
+</div>
+
+<script>
+  const bloco1 = [
+    {
+      q: "1. Qual a importância da Constituição de 1988 para a consolidação do Estado Democrático de Direito no Brasil?",
+      options: [
+        "Estabeleceu o fim do regime militar e garantiu direitos e liberdades fundamentais.",
+        "Instituiu uma ditadura para garantir a ordem pública.",
+        "Estabeleceu a supremacia do Executivo sobre os demais poderes.",
+        "Garantiu privilégios apenas para a classe política.",
+        "Ignorou os direitos sociais e políticos."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "2. Explique como a separação dos poderes contribui para o equilíbrio democrático.",
+      options: [
+        "Concentra o poder no Executivo para maior eficiência.",
+        "Divide o poder entre Executivo, Legislativo e Judiciário para evitar abusos.",
+        "Permite que o Judiciário tenha poder ilimitado.",
+        "Elimina o Legislativo para acelerar decisões.",
+        "Centraliza o poder no Legislativo."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "3. Quais são os principais direitos sociais previstos na Constituição de 1988?",
+      options: [
+        "Direito à propriedade privada e liberdade de expressão.",
+        "Direito ao trabalho, saúde, educação, lazer e seguridade social.",
+        "Direito ao voto obrigatório e ao serviço militar.",
+        "Direito à livre iniciativa e comércio.",
+        "Direito ao porte de armas e à privacidade."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "4. O que significa o princípio da legalidade no Estado Democrático de Direito?",
+      options: [
+        "O Estado pode agir sem respeitar a lei em casos excepcionais.",
+        "Os cidadãos podem descumprir leis injustas sem consequências.",
+        "Todas as ações do Estado devem estar previstas em lei.",
+        "O Executivo pode criar leis sem aprovação do Legislativo.",
+        "As leis podem ser interpretadas livremente por qualquer cidadão."
+      ],
+      correctIndex: 2
+    },
+    {
+      q: "5. Como funciona o processo de representação política no sistema eleitoral brasileiro?",
+      options: [
+        "Por meio de eleição direta e voto obrigatório para representantes políticos.",
+        "Por indicação direta do Presidente da República.",
+        "Por sorteio público entre os cidadãos.",
+        "Por meio de voto facultativo em eleições indiretas.",
+        "Por decisão do Poder Judiciário."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "6. Explique o conceito de cidadania ativa.",
+      options: [
+        "Apenas cumprir obrigações eleitorais e fiscais.",
+        "Participar de forma passiva nas decisões políticas.",
+        "Atuar de forma consciente, participando das decisões e fiscalização do Estado.",
+        "Apenas exercer o direito ao voto a cada eleição.",
+        "Não interferir nas decisões governamentais."
+      ],
+      correctIndex: 2
+    },
+    {
+      q: "7. Qual o papel do Poder Judiciário na proteção dos direitos fundamentais?",
+      options: [
+        "Criar leis que garantam direitos aos cidadãos.",
+        "Fiscalizar a atuação do Executivo e Legislativo apenas.",
+        "Interpretar e aplicar as leis garantindo a proteção dos direitos previstos na Constituição.",
+        "Governar o país em períodos de crise.",
+        "Realizar eleições para representantes políticos."
+      ],
+      correctIndex: 2
+    },
+    {
+      q: "8. O que é a judicialização da política e quais são suas consequências?",
+      options: [
+        "É a intervenção do Judiciário em decisões políticas, podendo causar conflitos entre poderes.",
+        "É a aprovação de leis pelo Legislativo sem consulta ao Judiciário.",
+        "É a atuação do Executivo na criação de políticas públicas.",
+        "É a votação popular direta para resolver disputas políticas.",
+        "É a não interferência do Judiciário em assuntos políticos."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "9. Como a violência de Estado afeta os direitos humanos?",
+      options: [
+        "Promove a proteção dos direitos dos cidadãos.",
+        "Causa violações graves como tortura, desaparecimentos e censura.",
+        "Garantia o acesso universal à justiça.",
+        "Fortalece a democracia e o Estado de Direito.",
+        "Impede abusos por parte das autoridades."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "10. Cite três mecanismos para promover a participação popular na gestão pública.",
+      options: [
+        "Voto obrigatório, censura e intervenção militar.",
+        "Audiências públicas, conselhos comunitários e referendos.",
+        "Monopólio do Executivo, veto parlamentar e decreto.",
+        "Campanhas eleitorais, eleições indiretas e governadores nomeados.",
+        "Decisões unilaterais do Legislativo, juízes e ministros."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "11. Como o princípio da igualdade é garantido na Constituição de 1988?",
+      options: [
+        "Garantindo privilégios para minorias específicas.",
+        "Tratando todos os cidadãos da mesma forma, sem discriminação.",
+        "Limitando os direitos políticos a alguns grupos.",
+        "Permitindo discriminações justificadas por lei.",
+        "Restringindo direitos de acordo com classe social."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "12. Qual o papel do Poder Legislativo no controle do Executivo?",
+      options: [
+        "Elaborar leis e fiscalizar a execução das políticas públicas pelo Executivo.",
+        "Executar as políticas públicas.",
+        "Julgar crimes cometidos por autoridades públicas.",
+        "Nomear ministros e juízes do Supremo Tribunal Federal.",
+        "Controlar o orçamento do Judiciário."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "13. Explique o funcionamento do sistema de freios e contrapesos.",
+      options: [
+        "Um poder exerce total domínio sobre os outros.",
+        "Os poderes Executivo, Legislativo e Judiciário se equilibram e controlam mutuamente.",
+        "O Judiciário pode impor suas decisões sem limitação.",
+        "O Legislativo pode ignorar as decisões do Judiciário.",
+        "O Executivo controla o Legislativo e Judiciário."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "14. O que é democracia participativa e como ela se manifesta no Brasil?",
+      options: [
+        "Sistema onde só representantes políticos decidem, sem participação popular.",
+        "Sistema que inclui a participação direta da população em decisões públicas, como plebiscitos e conselhos.",
+        "Exclusão de grupos sociais das decisões políticas.",
+        "Controle absoluto do Executivo sobre a sociedade.",
+        "Sistema em que o Judiciário decide políticas públicas diretamente."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "15. Quais instrumentos legais protegem a liberdade de expressão?",
+      options: [
+        "Constituição Federal e tratados internacionais de direitos humanos.",
+        "Decretos presidenciais.",
+        "Normas municipais restritivas.",
+        "Leis que censuram opiniões contrárias ao governo.",
+        "Ordens do Poder Judiciário sem possibilidade de recurso."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "16. Como a Constituição assegura os direitos políticos aos cidadãos?",
+      options: [
+        "Garantindo voto direto e secreto para maiores de 16 anos e elegibilidade para cargos públicos.",
+        "Proibindo a participação de jovens na política.",
+        "Restringindo o direito ao voto a uma elite política.",
+        "Permitindo o voto apenas para homens maiores de 18 anos.",
+        "Determinando eleições indiretas para todos os cargos."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "17. Quais são os limites legais para o exercício do poder estatal?",
+      options: [
+        "O poder estatal é ilimitado e soberano.",
+        "Restrições previstas na Constituição e respeito aos direitos humanos.",
+        "Pode violar direitos para manter a ordem a qualquer custo.",
+        "Não precisa prestar contas à sociedade.",
+        "Decisões do Executivo não precisam de controle judicial."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "18. Como a memória histórica contribui para a construção da justiça social?",
+      options: [
+        "Esquecendo crimes do passado para garantir estabilidade.",
+        "Negando direitos das vítimas para preservar a ordem.",
+        "Reconhecendo violações passadas para promover reparação e evitar repetição.",
+        "Ocultando fatos para proteger governantes anteriores.",
+        "Impunidade para autores de violações."
+      ],
+      correctIndex: 2
+    },
+    {
+      q: "19. Explique o conceito de direitos humanos universais.",
+      options: [
+        "Direitos aplicáveis apenas a cidadãos de determinados países.",
+        "Direitos básicos inerentes a todos os seres humanos, independentemente de nacionalidade, raça ou religião.",
+        "Direitos exclusivos de governos e instituições.",
+        "Direitos concedidos pelo Estado a critério político.",
+        "Direitos limitados a grupos sociais específicos."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "20. Quais são as consequências da judicialização das políticas públicas?",
+      options: [
+        "Fortalece a cooperação entre poderes e assegura direitos, mas pode gerar conflitos institucionais e lentidão.",
+        "Elimina a necessidade do Legislativo na formulação de políticas.",
+        "Reduz a participação popular nas decisões públicas.",
+        "Concentra o poder decisório no Executivo.",
+        "Diminui o acesso da população à justiça."
+      ],
+      correctIndex: 0
+    }
+  ];
+
+  const bloco2 = [
+    {
+      q: "21. O que são políticas públicas?",
+      options: [
+        "Conjunto de ações e decisões tomadas pelo Estado para resolver problemas públicos.",
+        "Atos administrativos exclusivos do Poder Judiciário.",
+        "Medidas privadas sem intervenção estatal.",
+        "Decisões de partidos políticos sem relação com a sociedade.",
+        "Exclusivamente projetos de iniciativa privada."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "22. Quais as etapas do ciclo de políticas públicas?",
+      options: [
+        "Planejamento, execução, encerramento.",
+        "Agenda, formulação, implementação, monitoramento e avaliação.",
+        "Execução e fiscalização apenas.",
+        "Criação e revisão sem monitoramento.",
+        "Aprovação e publicação."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "23. O que caracteriza a análise quantitativa de dados em políticas públicas?",
+      options: [
+        "Uso de números e estatísticas para avaliar resultados.",
+        "Apenas opiniões subjetivas dos envolvidos.",
+        "Baseada exclusivamente em narrativas.",
+        "Foco em histórias de vida sem dados numéricos.",
+        "Ausência de indicadores."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "24. O que é federalismo no contexto das políticas públicas?",
+      options: [
+        "Centralização total do poder em um único governo.",
+        "Distribuição de poderes e responsabilidades entre União, Estados e Municípios.",
+        "Concentração do orçamento em um ente federativo.",
+        "Decisões exclusivas do Legislativo federal.",
+        "Poder estatal ilimitado e unificado."
+      ],
+      correctIndex: 1
+    },
+    {
+      q: "25. O que significa descentralização administrativa?",
+      options: [
+        "Transferência de competências para órgãos ou entes locais.",
+        "Concentração das decisões no Executivo federal.",
+        "Exclusão dos municípios da gestão pública.",
+        "Redução do papel do Legislativo.",
+        "Centralização de recursos financeiros."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "26. Explique a intersetorialidade nas políticas públicas.",
+      options: [
+        "Ação integrada entre diferentes setores para resolver problemas complexos.",
+        "Atuação isolada de cada setor governamental.",
+        "Competição entre órgãos públicos.",
+        "Atuação exclusiva do setor de saúde.",
+        "Foco apenas no setor econômico."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "27. O que é transversalidade em políticas públicas?",
+      options: [
+        "Incorporação de objetivos de um setor em outros setores de forma integrada.",
+        "Separação total das ações governamentais.",
+        "Foco exclusivo em um departamento.",
+        "Exclusão de políticas sociais.",
+        "Apenas gestão orçamentária."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "28. Como a participação social influencia as políticas públicas?",
+      options: [
+        "Aumenta a legitimidade, transparência e efetividade das ações.",
+        "Impede a execução das políticas públicas.",
+        "Concentra o poder nas mãos do Executivo.",
+        "Reduz a fiscalização social.",
+        "Aumenta os custos desnecessariamente."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "29. Quais os principais instrumentos de controle social?",
+      options: [
+        "Audiências públicas, conselhos, fóruns e ouvidorias.",
+        "Atos administrativos sem participação social.",
+        "Decisões judiciais sem consulta pública.",
+        "Exclusão da sociedade das políticas públicas.",
+        "Controle interno exclusivo dos órgãos governamentais."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "30. O que é avaliação de políticas públicas?",
+      options: [
+        "Análise sistemática dos resultados e impactos para melhorar decisões futuras.",
+        "Execução das ações previstas.",
+        "Planejamento das atividades administrativas.",
+        "Fiscalização legal sem foco em resultados.",
+        "Publicação de relatórios oficiais sem análise."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "31. O que são políticas públicas universais?",
+      options: [
+        "Destinadas a toda a população, independentemente de renda ou condição social.",
+        "Restritas a grupos específicos.",
+        "Exclusivas para regiões metropolitanas.",
+        "Apenas para servidores públicos.",
+        "Limitadas a ações pontuais."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "32. O que são políticas públicas focalizadas?",
+      options: [
+        "Destinadas a grupos específicos com maior vulnerabilidade.",
+        "Para toda a população sem exceção.",
+        "Sem critérios claros de seleção.",
+        "Exclusivas para a iniciativa privada.",
+        "Voltadas apenas para o setor econômico."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "33. Explique o conceito de governança pública.",
+      options: [
+        "Conjunto de práticas que garantem a participação, transparência e eficácia na gestão pública.",
+        "Atuação autoritária do Executivo.",
+        "Gestão privada sem controle social.",
+        "Controle total do Legislativo sobre o Executivo.",
+        "Ausência de participação popular."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "34. Qual a importância da transparência na gestão pública?",
+      options: [
+        "Permite o controle social e fortalece a confiança nas instituições.",
+        "Esconde informações para proteger agentes públicos.",
+        "Reduz a participação cidadã.",
+        "Fortalece a corrupção.",
+        "Impede o acesso às informações públicas."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "35. O que é controle social nas políticas públicas?",
+      options: [
+        "Participação da sociedade na fiscalização e avaliação das ações governamentais.",
+        "Exclusão da população das decisões públicas.",
+        "Atuação exclusiva dos órgãos de controle interno.",
+        "Decisões tomadas apenas pelo Executivo.",
+        "Concentração do poder nas mãos de poucos."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "36. Explique o papel dos conselhos gestores na política pública.",
+      options: [
+        "Fóruns que reúnem governo e sociedade para acompanhar e deliberar sobre políticas públicas.",
+        "Órgãos exclusivos do Executivo.",
+        "Espaços para decisões sem participação popular.",
+        "Comissões internas sem poder deliberativo.",
+        "Instituições privadas sem ligação com o Estado."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "37. O que significa accountability na administração pública?",
+      options: [
+        "Responsabilização dos gestores pelo uso dos recursos e resultados obtidos.",
+        "Impunidade dos agentes públicos.",
+        "Sigilo absoluto sobre ações governamentais.",
+        "Ausência de prestação de contas.",
+        "Controle exclusivo do Executivo."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "38. Quais são os principais desafios na implementação de políticas públicas?",
+      options: [
+        "Falta de recursos, resistência política, burocracia e falta de capacitação.",
+        "Excesso de participação popular e transparência.",
+        "Demora nas eleições e instabilidade política.",
+        "Ausência de legislação e controle social.",
+        "Interferência exclusiva do Judiciário."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "39. O que caracteriza a política pública emergencial?",
+      options: [
+        "Ações rápidas para responder a crises ou situações imprevistas.",
+        "Planos de longo prazo sem urgência.",
+        "Projetos privados sem intervenção estatal.",
+        "Medidas restritas apenas ao Legislativo.",
+        "Programas sociais permanentes."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "40. O que são políticas públicas continuadas?",
+      options: [
+        "Ações planejadas para longo prazo com continuidade garantida.",
+        "Medidas emergenciais de curto prazo.",
+        "Projetos temporários sem avaliação.",
+        "Iniciativas sem recursos definidos.",
+        "Planos interrompidos por decisões políticas."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "41. Como a participação social influencia as políticas públicas?",
+      options: [
+        "Torna as políticas mais legítimas e eficazes, incorporando demandas reais da população.",
+        "Impedindo a execução das ações governamentais.",
+        "Concentrando decisões no Executivo sem consulta.",
+        "Reduz a transparência e o controle social.",
+        "Aumenta os custos sem benefícios."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "42. O que é orçamento participativo?",
+      options: [
+        "Mecanismo que permite aos cidadãos decidir diretamente sobre parte dos recursos públicos.",
+        "Gestão exclusiva do Legislativo sobre o orçamento.",
+        "Planejamento financeiro sem consulta pública.",
+        "Controle do orçamento pelo Executivo sem transparência.",
+        "Decisões orçamentárias somente pelos tribunais."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "43. Explique a importância da inovação nas políticas públicas.",
+      options: [
+        "Melhora a eficiência, qualidade e alcance das ações governamentais.",
+        "Mantém práticas antigas e inflexíveis.",
+        "Reduz a participação cidadã.",
+        "Diminui a transparência e controle social.",
+        "Desestimula o uso de tecnologia."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "44. O que é avaliação de impacto em políticas públicas?",
+      options: [
+        "Análise dos efeitos diretos e indiretos causados pelas políticas na sociedade.",
+        "Monitoramento do orçamento público.",
+        "Fiscalização administrativa sem resultados práticos.",
+        "Planejamento sem execução.",
+        "Publicação de relatórios sem avaliação."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "45. Como as políticas públicas podem promover a inclusão social?",
+      options: [
+        "Implementando ações específicas para grupos vulneráveis e garantindo acesso a direitos.",
+        "Excluindo minorias para manter a ordem.",
+        "Restringindo benefícios a grupos privilegiados.",
+        "Centralizando recursos em áreas urbanas.",
+        "Ignorando as desigualdades sociais."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "46. Qual a relação entre políticas públicas e desenvolvimento sustentável?",
+      options: [
+        "Políticas que buscam equilíbrio entre crescimento econômico, justiça social e proteção ambiental.",
+        "Foco exclusivo no crescimento econômico sem considerar impactos sociais.",
+        "Prioridade apenas na proteção ambiental sem desenvolvimento.",
+        "Desconsideração dos aspectos sociais e ambientais.",
+        "Atuação isolada dos setores públicos."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "47. O que é a política pública de assistência social?",
+      options: [
+        "Conjunto de ações para garantir proteção básica e especial a pessoas em situação de vulnerabilidade.",
+        "Medidas exclusivas para o setor privado.",
+        "Atuação restrita ao poder judiciário.",
+        "Programas que excluem grupos vulneráveis.",
+        "Projetos temporários sem continuidade."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "48. Explique o conceito de política pública de saúde.",
+      options: [
+        "Ações que garantem acesso universal e integral à saúde para a população.",
+        "Serviços de saúde privados sem regulação.",
+        "Medidas restritas a grandes hospitais.",
+        "Atuação exclusiva do setor farmacêutico.",
+        "Programas focados apenas em doenças específicas."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "49. O que são políticas públicas educacionais?",
+      options: [
+        "Conjunto de ações para garantir educação de qualidade, gratuita e inclusiva para todos.",
+        "Iniciativas privadas sem acesso universal.",
+        "Programas sem avaliação e monitoramento.",
+        "Políticas restritas a escolas particulares.",
+        "Medidas exclusivas para a educação superior."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "50. Como o planejamento estratégico contribui para as políticas públicas?",
+      options: [
+        "Define objetivos, metas e recursos para orientar a ação governamental.",
+        "Elimina a necessidade de avaliação das ações.",
+        "Permite decisões arbitrárias sem planejamento.",
+        "Exclui a participação social no processo.",
+        "Impede a transparência das ações."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "51. O que é política pública de segurança pública?",
+      options: [
+        "Conjunto de ações para garantir a ordem, prevenir crimes e proteger a população.",
+        "Medidas que restringem direitos civis sem controle.",
+        "Atuação exclusiva das forças armadas.",
+        "Políticas sem avaliação e planejamento.",
+        "Iniciativas privadas de segurança."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "52. Explique o conceito de políticas públicas ambientais.",
+      options: [
+        "Ações que promovem a conservação dos recursos naturais e o desenvolvimento sustentável.",
+        "Programas focados somente na indústria.",
+        "Medidas que ignoram a preservação ambiental.",
+        "Iniciativas exclusivas do setor agrícola.",
+        "Políticas que priorizam o crescimento econômico acima de tudo."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "53. Qual o papel da participação cidadã na formulação de políticas públicas?",
+      options: [
+        "Garantir que as políticas reflitam as necessidades e interesses da sociedade.",
+        "Impedir a influência da população nas decisões.",
+        "Permitir decisões exclusivas do Executivo.",
+        "Restringir o acesso à informação.",
+        "Desestimular a fiscalização social."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "54. O que é política pública de habitação?",
+      options: [
+        "Conjunto de ações para garantir moradia digna à população.",
+        "Medidas que priorizam o setor privado.",
+        "Iniciativas sem recursos financeiros definidos.",
+        "Programas restritos a regiões urbanas centrais.",
+        "Políticas sem participação social."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "55. Como a avaliação participativa pode melhorar as políticas públicas?",
+      options: [
+        "Incorporando o feedback da sociedade para ajustar e aprimorar ações.",
+        "Excluindo a opinião dos beneficiários.",
+        "Impondo decisões sem consulta pública.",
+        "Ignorando os resultados da avaliação.",
+        "Focando apenas em aspectos técnicos."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "56. O que são políticas públicas culturais?",
+      options: [
+        "Ações que valorizam e promovem a diversidade cultural e o acesso à cultura.",
+        "Programas apenas para artistas renomados.",
+        "Medidas exclusivas do setor privado.",
+        "Iniciativas que restringem o acesso cultural.",
+        "Projetos sem financiamento público."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "57. Qual o papel da pesquisa e inovação nas políticas públicas?",
+      options: [
+        "Fornecer dados e soluções para melhorar a efetividade das ações governamentais.",
+        "Substituir a participação social.",
+        "Impedir a adoção de novas tecnologias.",
+        "Focar somente na burocracia administrativa.",
+        "Desconsiderar as necessidades reais da população."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "58. Como as parcerias público-privadas (PPP) contribuem para políticas públicas?",
+      options: [
+        "Possibilitam investimentos privados em serviços públicos, ampliando recursos e eficiência.",
+        "Eliminam o papel do Estado.",
+        "Excluem o controle social.",
+        "Concentram os serviços em empresas privadas sem regulação.",
+        "Impedem a transparência e prestação de contas."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "59. O que é governança colaborativa?",
+      options: [
+        "Processo de gestão que envolve vários atores, incluindo governo, sociedade civil e setor privado.",
+        "Atuação exclusiva do governo sem participação externa.",
+        "Gestão isolada de cada órgão público.",
+        "Controle total do Executivo sem participação social.",
+        "Decisões centralizadas no Legislativo."
+      ],
+      correctIndex: 0
+    },
+    {
+      q: "60. Explique o conceito de efetividade em políticas públicas.",
+      options: [
+        "Capacidade da política de alcançar os resultados previstos e gerar impacto positivo.",
+        "Apenas executar as ações planejadas sem medir resultados.",
+        "Cumprir formalidades legais sem resultados práticos.",
+        "Reduzir custos independentemente dos efeitos sociais.",
+        "Focar apenas em ações de curto prazo."
+      ],
+      correctIndex: 0
+    }
+  ];
+  const bloco3 = [
+  {
+    q: "1. Quais são os princípios éticos fundamentais do serviço público?",
+    options: [
+      "Sigilo, lucro e eficiência",
+      "Legalidade, impessoalidade, moralidade, publicidade e eficiência",
+      "Competitividade, sigilo e lucro",
+      "Flexibilidade, autonomia e lucro",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "2. O que significa governança pública?",
+    options: [
+      "Gestão privada das políticas públicas",
+      "Conjunto de processos, regras e práticas para garantir eficiência, transparência e responsabilidade na administração pública",
+      "Controle total do Executivo sobre o Legislativo",
+      "Ausência de participação cidadã",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "3. Qual a importância da transparência na administração pública?",
+    options: [
+      "Facilita a corrupção",
+      "Permite o controle social, aumentando confiança e legitimidade das ações governamentais",
+      "Dificulta o acesso às informações",
+      "Evita que a sociedade participe das decisões",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "4. O que é acesso à informação pública?",
+    options: [
+      "Direito restrito a autoridades",
+      "Direito de qualquer cidadão de obter informações produzidas ou custodiadas pelo Estado",
+      "Sigilo absoluto sobre dados governamentais",
+      "Divulgação apenas para imprensa oficial",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "5. A moralidade administrativa se refere a:",
+    options: [
+      "Cumprir a lei apenas quando conveniente",
+      "Atuar conforme princípios éticos e legais na gestão pública",
+      "Buscar lucro em processos públicos",
+      "Desconsiderar a opinião pública",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "6. O que é conflito de interesses no serviço público?",
+    options: [
+      "Quando um servidor atua em benefício próprio em detrimento do interesse público",
+      "Quando há divergência entre servidores",
+      "Quando o cidadão participa da gestão",
+      "Quando o governo terceiriza serviços",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "7. Qual o papel dos órgãos de controle na governança pública?",
+    options: [
+      "Fiscalizar, auditar e garantir conformidade com as normas e princípios éticos",
+      "Criar leis",
+      "Executar políticas públicas",
+      "Promover interesses privados",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "8. A Lei de Acesso à Informação (LAI) garante:",
+    options: [
+      "Sigilo eterno para documentos governamentais",
+      "Transparência e direito do cidadão de acessar informações públicas, salvo exceções legais",
+      "Liberdade total para divulgar documentos sigilosos",
+      "Restrições arbitrárias à divulgação",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "9. O que caracteriza a impessoalidade na ética pública?",
+    options: [
+      "Favorecimento de amigos e familiares",
+      "Tratar todos os cidadãos e casos de forma igualitária, sem favorecimento pessoal",
+      "Priorizar interesses pessoais",
+      "Não aplicar regras",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "10. O que é governança colaborativa?",
+    options: [
+      "Participação exclusiva do governo na gestão pública",
+      "Inclusão de diferentes atores sociais na tomada de decisões públicas",
+      "Exclusão da sociedade civil",
+      "Gestão autocrática",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "11. Qual a relação entre ética e transparência?",
+    options: [
+      "Transparência é uma forma prática de garantir a ética no serviço público",
+      "São conceitos totalmente independentes",
+      "Transparência prejudica a ética",
+      "Ética exige sigilo absoluto",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "12. O que significa accountability na administração pública?",
+    options: [
+      "Responsabilidade e prestação de contas pelos agentes públicos à sociedade",
+      "Sigilo total das ações governamentais",
+      "Ausência de controle social",
+      "Atuação livre e sem regras",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "13. O que é integridade pública?",
+    options: [
+      "Adoção de práticas que previnem corrupção e garantem conduta ética dos servidores",
+      "Ganhar vantagens pessoais",
+      "Corrupção institucionalizada",
+      "Atuação fora das leis",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "14. O que caracteriza a publicidade na administração pública?",
+    options: [
+      "Tornar as ações e decisões públicas transparentes e acessíveis",
+      "Manter documentos em segredo",
+      "Divulgação apenas para grupos restritos",
+      "Esconder informações para evitar críticas",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "15. Como a ética contribui para a qualidade dos serviços públicos?",
+    options: [
+      "Promovendo a confiança da sociedade e uso eficiente dos recursos públicos",
+      "Incentivando privilégios pessoais",
+      "Limitando a participação social",
+      "Favorecendo corrupção",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  }
+];
+
+const bloco4 = [
+  {
+    q: "1. O que significa diversidade no contexto social?",
+    options: [
+      "Igualdade absoluta sem diferenças",
+      "Reconhecimento e valorização das diferenças culturais, étnicas, de gênero, sexualidade e outras",
+      "Exclusão de minorias",
+      "Homogeneização cultural",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "2. Qual a importância da inclusão social?",
+    options: [
+      "Manter grupos sociais separados",
+      "Garantir que grupos vulneráveis tenham acesso igualitário a direitos e oportunidades",
+      "Privilegiar apenas grupos majoritários",
+      "Ignorar desigualdades",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "3. Quais grupos são considerados vulneráveis para políticas públicas de inclusão?",
+    options: [
+      "Crianças, idosos, LGBTQIA+, pessoas com deficiência, indígenas, quilombolas, população em situação de rua",
+      "Apenas idosos",
+      "Somente pessoas com deficiência",
+      "Exclusivamente indígenas",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "4. O que é interseccionalidade?",
+    options: [
+      "Interação entre diferentes formas de opressão e discriminação que afetam grupos sociais",
+      "Exclusão de minorias",
+      "Isolamento de grupos sociais",
+      "Igualdade irrestrita sem considerar diferenças",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "5. Como as políticas públicas podem promover a diversidade?",
+    options: [
+      "Ignorando diferenças culturais",
+      "Criando ações específicas que reconhecem e respeitam as particularidades dos grupos sociais",
+      "Padronizando o atendimento para todos",
+      "Limitando o acesso a direitos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "6. O que caracteriza a discriminação institucional?",
+    options: [
+      "Atitudes individuais isoladas",
+      "Práticas e normas oficiais que prejudicam certos grupos sociais sistematicamente",
+      "Inclusão social ampla",
+      "Ações afirmativas",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "7. Qual o papel da educação na promoção da diversidade?",
+    options: [
+      "Reforçar preconceitos",
+      "Promover o respeito e valorização das diferenças desde a infância",
+      "Ignorar as diferenças culturais",
+      "Padronizar o ensino sem diversidade",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "8. O que são ações afirmativas?",
+    options: [
+      "Políticas que promovem igualdade formal apenas",
+      "Medidas específicas para reduzir desigualdades e promover inclusão de grupos historicamente discriminados",
+      "Privilegiar grupos majoritários",
+      "Reforçar segregação social",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "9. O que significa acessibilidade para pessoas com deficiência?",
+    options: [
+      "Barreiras arquitetônicas e sociais",
+      "Condições que permitem o acesso pleno e autonomia dessas pessoas em todos os espaços",
+      "Exclusão de espaços públicos",
+      "Restrições no trabalho",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "10. O que é o respeito à identidade de gênero?",
+    options: [
+      "Imposição de padrões binários",
+      "Reconhecer e aceitar a autoidentificação das pessoas independentemente do sexo biológico",
+      "Negar direitos às minorias sexuais",
+      "Desconsiderar escolhas pessoais",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "11. Quais são os desafios da população em situação de rua?",
+    options: [
+      "Acesso fácil a serviços públicos",
+      "Vulnerabilidade social, falta de moradia, saúde precária e exclusão social",
+      "Plena inclusão social",
+      "Prioridade no mercado de trabalho",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "12. O que caracteriza a diversidade cultural?",
+    options: [
+      "Uniformidade de costumes",
+      "Variedade de práticas, crenças, línguas e expressões entre diferentes grupos sociais",
+      "Exclusão de tradições",
+      "Homogeneização global",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "13. Como a intersetorialidade pode ajudar na inclusão social?",
+    options: [
+      "Atuação isolada de setores públicos",
+      "Integração de diferentes políticas e áreas para abordar múltiplos fatores das desigualdades",
+      "Exclusão de setores sociais",
+      "Focalização única em um problema",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "14. Qual a importância da representatividade em espaços de poder?",
+    options: [
+      "Exclusão de minorias",
+      "Garantir que grupos diversos tenham voz e influência nas decisões políticas e sociais",
+      "Monopólio de grupos majoritários",
+      "Negar direitos políticos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "15. Como o preconceito pode ser combatido nas organizações?",
+    options: [
+      "Incentivando estereótipos",
+      "Promovendo treinamento, políticas inclusivas e conscientização sobre diversidade",
+      "Ignorando conflitos",
+      "Reforçando exclusão",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  }
+];
+
+const bloco5 = [
+  {
+    q: "1. Quais são os princípios constitucionais básicos da administração pública?",
+    options: [
+      "Legalidade, impessoalidade, moralidade, publicidade e eficiência",
+      "Segredo, lucro e discriminação",
+      "Autonomia irrestrita dos agentes públicos",
+      "Privacidade absoluta",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "2. O que é a reforma administrativa?",
+    options: [
+      "Mudança na estrutura organizacional e regras do setor público para maior eficiência e modernização",
+      "Aumento de privilégios dos servidores",
+      "Redução dos direitos dos cidadãos",
+      "Privatização completa dos serviços públicos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "3. Qual a função do Plano Plurianual (PPA)?",
+    options: [
+      "Estabelecer metas e prioridades para o governo a médio prazo (4 anos)",
+      "Criar leis ordinárias",
+      "Definir o orçamento anual apenas",
+      "Regular a iniciativa privada",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "4. O que é a Lei de Diretrizes Orçamentárias (LDO)?",
+    options: [
+      "Lei que orienta a elaboração do orçamento anual, alinhando-o às prioridades do PPA",
+      "Decreto presidencial",
+      "Documento sigiloso",
+      "Regulamento interno do Legislativo",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "5. A Lei Orçamentária Anual (LOA) tem como função:",
+    options: [
+      "Autorizar as despesas e receitas previstas para o exercício financeiro de um ano",
+      "Criar impostos",
+      "Estabelecer políticas públicas gerais",
+      "Controlar a inflação",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "6. O que é sistema estruturante da administração pública?",
+    options: [
+      "Conjunto de normas e processos que sustentam o funcionamento do setor público",
+      "Sistema privado de gestão",
+      "Estrutura do mercado financeiro",
+      "Empresa estatal",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "7. Como se caracteriza a descentralização administrativa?",
+    options: [
+      "Transferência de competências do governo central para entes federados ou entidades públicas",
+      "Concentração de poder no Executivo federal",
+      "Privatização de serviços públicos",
+      "Redução da participação municipal",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "8. O que são normas administrativas?",
+    options: [
+      "Regras que disciplinam a organização e funcionamento da administração pública",
+      "Normas privadas",
+      "Regulamentos internos das empresas",
+      "Leis municipais apenas",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "9. Qual a importância da transparência nas finanças públicas?",
+    options: [
+      "Facilitar a corrupção",
+      "Permitir controle social e uso responsável dos recursos públicos",
+      "Esconder gastos governamentais",
+      "Privilegiar interesses políticos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 1
+  },
+  {
+    q: "10. O que é tributação no âmbito público?",
+    options: [
+      "Processo de arrecadação de recursos por meio de impostos, taxas e contribuições para financiar o Estado",
+      "Lucro privado",
+      "Receita de empresas privadas",
+      "Doação voluntária de cidadãos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "11. Como a administração pública pode garantir eficiência?",
+    options: [
+      "Focalizando processos, planejamento, controle e avaliação contínua",
+      "Ignorando o interesse público",
+      "Aumentando custos sem controle",
+      "Favorecendo corrupção",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "12. Qual a função dos órgãos de controle interno no setor público?",
+    options: [
+      "Fiscalizar e garantir o cumprimento das normas e metas estabelecidas",
+      "Atuar apenas em empresas privadas",
+      "Criar leis municipais",
+      "Organizar eventos públicos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "13. O que significa estrutura organizacional na administração pública?",
+    options: [
+      "Forma como os órgãos e entidades estão distribuídos e coordenados para executar suas funções",
+      "Estrutura de mercado financeiro",
+      "Organização de empresas privadas",
+      "Grupo de interesse político",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "14. Qual o papel do Ministério da Economia na administração pública federal?",
+    options: [
+      "Planejar, coordenar e executar políticas econômicas e financeiras do governo federal",
+      "Atuar como agência privada",
+      "Controlar somente os municípios",
+      "Organizar campanhas eleitorais",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "15. O que é o controle social na administração pública?",
+    options: [
+      "Participação da sociedade civil na fiscalização e avaliação das ações governamentais",
+      "Exclusão da população das decisões",
+      "Controle exclusivo do Executivo",
+      "Privacidade total dos gastos públicos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  }
+];
+
+const bloco6 = [
+  {
+    q: "1. Como evoluíram as relações de trabalho no setor público?",
+    options: [
+      "Da rigidez e hierarquia para maior flexibilidade, digitalização e foco em resultados",
+      "Sem mudanças ao longo do tempo",
+      "Exclusivamente terceirização total",
+      "Centralização absoluta",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "2. Qual o impacto da inteligência artificial (IA) na administração pública?",
+    options: [
+      "Automação de processos, melhoria da eficiência e tomada de decisão baseada em dados",
+      "Eliminação total de empregos",
+      "Redução da transparência",
+      "Diminuição da qualidade dos serviços",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "3. O que são riscos do uso de tecnologias no setor público?",
+    options: [
+      "Problemas de segurança, privacidade, desigualdade de acesso e dependência tecnológica",
+      "Apenas benefícios sem riscos",
+      "Eliminação da participação cidadã",
+      "Aumento dos custos sem vantagens",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "4. Como a automação pode contribuir para a produtividade?",
+    options: [
+      "Reduzindo tarefas manuais repetitivas e aumentando a eficiência operacional",
+      "Substituindo todas as pessoas",
+      "Reduzindo o atendimento ao público",
+      "Eliminando processos de controle",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "5. O que significa a digitalização dos serviços públicos?",
+    options: [
+      "Transformar processos analógicos em digitais para facilitar o acesso e agilizar serviços",
+      "Excluir atendimento presencial",
+      "Aumentar burocracia",
+      "Restrição do acesso para cidadãos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "6. Qual o papel do servidor público na era da tecnologia?",
+    options: [
+      "Adaptar-se às novas ferramentas e focar em tarefas estratégicas e de atendimento",
+      "Recusar novas tecnologias",
+      "Permanecer com processos manuais",
+      "Substituir tecnologias por processos antigos",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "7. O que é governança digital?",
+    options: [
+      "Conjunto de políticas e práticas para gerir o uso da tecnologia na administração pública",
+      "Gestão exclusivamente privada",
+      "Uso arbitrário da tecnologia",
+      "Exclusão da sociedade do acesso digital",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "8. Como a tecnologia pode melhorar a transparência?",
+    options: [
+      "Disponibilizando dados públicos em plataformas abertas e acessíveis",
+      "Ocultando informações importantes",
+      "Limitando o acesso à informação",
+      "Controlando o uso da internet",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "9. O que são sistemas integrados no setor público?",
+    options: [
+      "Plataformas que conectam diferentes órgãos para troca eficiente de informações e serviços",
+      "Sistemas isolados",
+      "Ferramentas exclusivas de empresas privadas",
+      "Sistemas manuais",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "10. Como a automação pode afetar os empregos públicos?",
+    options: [
+      "Pode substituir algumas funções repetitivas, exigindo requalificação e adaptação dos servidores",
+      "Eliminar todos os empregos",
+      "Aumentar cargos sem mudanças",
+      "Não afetar de forma alguma",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "11. O que é ética digital no setor público?",
+    options: [
+      "Uso responsável, transparente e seguro da tecnologia para proteger dados e direitos dos cidadãos",
+      "Utilização arbitrária das informações",
+      "Compartilhamento indiscriminado de dados pessoais",
+      "Exclusão de cidadãos dos processos digitais",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "12. Quais são as limitações da inteligência artificial no setor público?",
+    options: [
+      "Possibilidade de vieses, erros e falta de transparência nas decisões automatizadas",
+      "Total eficiência sem falhas",
+      "Substituição total do humano em todas as áreas",
+      "Redução da transparência",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "13. Como a inovação tecnológica pode contribuir para a inclusão?",
+    options: [
+      "Facilitar o acesso a serviços públicos para pessoas com deficiência ou em áreas remotas",
+      "Excluir grupos vulneráveis",
+      "Aumentar a burocracia",
+      "Limitar o acesso a informações",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "14. O que é segurança da informação na administração pública?",
+    options: [
+      "Proteção dos dados e sistemas contra acessos não autorizados e ataques cibernéticos",
+      "Divulgação indiscriminada de dados",
+      "Falta de controle sobre informações",
+      "Compartilhamento de senhas públicas",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  },
+  {
+    q: "15. Qual o papel da capacitação tecnológica dos servidores públicos?",
+    options: [
+      "Preparar para utilizar ferramentas digitais e promover inovação na gestão pública",
+      "Manter os servidores fora do uso tecnológico",
+      "Desestimular o uso da tecnologia",
+      "Priorizar métodos tradicionais",
+      "Nenhuma das anteriores"
+    ],
+    correctIndex: 0
+  }
+];
+
+  function criarQuestao(bloco, containerId, offset=0) {
+    const container = document.getElementById(containerId);
+    bloco.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+
+      const optionsHtml = q.options.map((opt, idx) =>
+        `<li><button class="option-btn" onclick="checkAnswer(${offset+i},${idx}, this)">${opt}</button></li>`
+      ).join('');
+
+      div.innerHTML = `
+        <p><strong>${offset+i+1}. ${q.q}</strong></p>
+        <ul class="options">${optionsHtml}</ul>
+        <p class="result" id="result-${offset+i}"></p>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  criarQuestao(bloco1, 'bloco1', 0);
+  criarQuestao(bloco2, 'bloco2', bloco1.length);
+  criarQuestao(bloco3, 'bloco3', bloco2.length);
+  criarQuestao(bloco4, 'bloco4', bloco3.length);
+  criarQuestao(bloco5, 'bloco5', bloco4.length);
+  criarQuestao(bloco6, 'bloco6', bloco5.length);
+
+  let score = 0;
+  let erros = 0;
+  let answeredCount = 0;
+
+  function checkAnswer(qIndex, optIndex, btn) {
+    const allQuestions = [...bloco1, ...bloco2, ...bloco3, ...bloco4, ...bloco5, ...bloco6];
+    const question = allQuestions[qIndex];
+    const resultElem = document.getElementById(`result-${qIndex}`);
+    const optionButtons = btn.parentElement.parentElement.querySelectorAll('button');
+
+    if(optionButtons[0].disabled) return;
+
+    optionButtons.forEach(b => b.disabled = true);
+
+    if(optIndex === question.correctIndex) {
+      resultElem.textContent = "Resposta correta!";
+      resultElem.style.color = "#7CFC00";
+      score++;
+    } else {
+      resultElem.textContent = `Resposta incorreta! A resposta correta é: "${question.options[question.correctIndex]}"`;
+      resultElem.style.color = "#FF6347";
+      erros++;
+    }
+    answeredCount++;
+    atualizarPlacar();
+  }
+
+  function atualizarPlacar() {
+    document.getElementById('acertos').textContent = score;
+    document.getElementById('erros').textContent = erros;
+  }
+</script>
+</body>
+</html>
